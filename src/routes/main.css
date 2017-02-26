@@ -1,0 +1,29 @@
+.sider {
+    width: 200px;
+    height: 100%;
+    background: #3e3e3e;
+    position: fixed;
+}
+
+.main  {
+    margin-left: 200px;
+}
+
+.sider,
+.main {
+    transition: all 250ms ease;
+}
+
+
+.container {
+    background: #fff;
+    padding: 20px;
+    padding-bottom: 60px;
+    margin: 20px;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.1), -1px -1px 1px rgba(0,0,0,0.1);
+}
+
+.btnwrap {
+    margin-bottom: 15px;
+    text-align: right;
+}

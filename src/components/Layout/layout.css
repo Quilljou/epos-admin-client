@@ -1,0 +1,33 @@
+.nav-btn {
+    position: absolute;
+    width: 47px;
+    height: 47px;
+    line-height: 47px;
+    font-size: 18px;
+    pointer: cursor;
+    transition: all .3s cubic-bezier(.55,.055,.675,.19);
+    text-align: center;
+}
+
+.nav-btn:hover {
+    color: #108ee9;
+    background-color: rgba(16,142,233,.15);
+}
+
+.logo-wrap {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+
+.container {
+    background: #fff;
+    padding: 20px 30px;
+}
