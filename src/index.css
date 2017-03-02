@@ -14,3 +14,20 @@ html, body, :global(#root) {
 :global(.fr) {
     float: right !important;
 }
+
+:global(.mt) {
+    margin-top: 15px !important;
+}
+
+
+:global(.mb) {
+    margin-bottom: 15px !important;
+}
+
+:global(td) {
+  text-align: center;
+}
+
+:global(th) {
+  text-align: center !important;
+}

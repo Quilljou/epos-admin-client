@@ -12,12 +12,12 @@ function Menus() {
             theme='dark'
             mode="inline"
             >
-            <Menu.Item key="index">
+            {/* <Menu.Item key="index">
                 <Link to="/">
                     <Icon type="pie-chart"></Icon>
                     首页
                 </Link>
-            </Menu.Item>
+            </Menu.Item> */}
 
             <Menu.Item key="user">
                 <Link to="/tenant">

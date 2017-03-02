@@ -1,6 +1,8 @@
 import axios from 'axios';
 // const reqwest = require('reqwest');
 import { message } from 'antd';
+import { hashHistory } from 'dva/router';
+import  Auth from './auth';
 
 
 function checkStatus(response) {
@@ -24,8 +26,35 @@ function filterData(response) {
 };
 
 
-export default function request (options) {
+function checkLogin(response) {
+  if(response.data && response.data.login === false) {
+    hashHistory.push('/login');
+    Auth.logout();
+    return false;
+  }
+  return response
+}
+// 是先检查登录状态，还是先检查状态码
+// 应该是先检查状态码，如果5xx或者4xx的话也不会有response.data返回
+
+
+
+export  function request (options) {
+    const token = localStorage.getItem('token');
+    if(token) {
+      const headers = {
+          Authorization: "Bearer " + token
+        }
+        if(!options.headers) {
+          options.headers = {};
+        }
+        options.headers.Authorization = "Bearer " + token;
+        options.withCredentials = true;
+    //   options.headers = Object.assign({},options.headers,headers)
+    }
+
     return axios(options)
+    .then(checkLogin)
     .then(checkStatus)
     .then((response) => {
       if(options.nofilter === true) {
@@ -42,4 +71,9 @@ export default function request (options) {
     .catch((err) => {
       message.error('网络错误，请稍后重试')
     })
+}
+
+export function getUrl(url) {
+    var base = 'http://localhost:8888/api';
+    return base + url;
 }

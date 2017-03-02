@@ -165,7 +165,8 @@ function Tenant({ dispatch, tenant }) {
     current: page,
     showTotal(total) {
         return `共 ${total} 条`;
-    }
+    },
+    showQuickJumper: true
   }
 
     function onShowUserModal() {
@@ -178,7 +179,7 @@ function Tenant({ dispatch, tenant }) {
         dispatch({
             type: 'tenant/showPwdModal',
             payload: {
-                currentItem: record    
+                currentItem: record
             }
         })
     }
@@ -191,8 +192,6 @@ function Tenant({ dispatch, tenant }) {
                 type: 'tenant/create',
                 payload
             })
-
-
         },
         hideUserModal () {
             dispatch({
@@ -219,7 +218,12 @@ function Tenant({ dispatch, tenant }) {
     const TableProps = {
         pagination,
         dataSource,
-        columns
+        columns,
+        bordered: true,
+        rowKey: 'id',
+        onChange () {
+            console.log('change');
+        }
     }
 
     return (

@@ -25,16 +25,14 @@ export default {
       }
     },
     deleteSuccess(state,action) {
-      if(state.dataSource.length - 1 === 0) {
-
       const newData =  state.dataSource.filter((item) => {
         return item.id !== action.payload.id;
       })
+
       return {...state,
         dataSource: newData,
         total: state.total - 1
       }
-    }
     },
     updateSuccess(state,action) {
       const id = action.payload.id;
@@ -53,8 +51,8 @@ export default {
     showUserModal (state, action) {
       return {...state,userModalVisible: true}
     },
-    showUserModal (state, action) {
-      return {...state,userModalVisible: true}
+    hideUserModal (state, action) {
+      return {...state,userModalVisible: false}
     },
     hidePwdModal (state, action) {
       return {...state,pwdModalVisible: false}
@@ -98,7 +96,12 @@ export default {
       },
       *renew ({payload}, { call, put }) {
         const data = yield call(renew, payload);
-        console.log(data);
+        if(data) {
+            yield put({
+                type: 'updateSuccess',
+                payload: data
+            })
+        }
       },
       *updatePassword ({payload}, { call, put, select }) {
         yield put({type: 'hidePwdModal'})

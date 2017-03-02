@@ -1,12 +1,12 @@
 import qs from 'qs';
 // import { message } from 'antd';
-import request from '../utils/request';
+import {request, getUrl} from '../utils/request';
 
 
-var base = 'http://112.74.34.58:8888';
-function getUrl(url) {
-    return base + url;
-}
+// var base = 'http://112.74.34.58:8888';
+// function getUrl(url) {
+//     return base + url;
+// }
 
 
 
@@ -45,7 +45,6 @@ export async function renew (payload) {
     method: 'post',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     data: qs.stringify({renewTime}),
-    nofilter: true
   })
 }
 

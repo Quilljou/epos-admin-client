@@ -7,10 +7,13 @@ const app = dva();
 // 2. Plugins
 // app.use({});
 
-// 3. Model
-app.model(require('./models/tenant'));
 
-app.model(require("./models/andriod"));
+
+// // 3. Model
+app.model(require('./models/android'));
+app.model(require('./models/tenant'));
+app.model(require('./models/login'));
+app.model(require("./models/app"));
 
 // 4. Router
 app.router(require('./router'));

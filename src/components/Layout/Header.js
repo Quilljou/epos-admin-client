@@ -7,16 +7,17 @@ const SubMenu = Menu.SubMenu;
 const MenuItem = Menu.Item;
 
 // location 是 props
-function Header({location, changeNavStatus}) {
+function Header({location, changeNavStatus, onLogout, user}) {
   return (
     <div>
       <div className={styles['nav-btn']} onClick={changeNavStatus}>
         <Icon type="menu-fold"></Icon>
       </div>
       <Menu
-          mode="horizontal">
-          <SubMenu title={<span><Icon type="user"/> guest</span>} className="fr">
-              <MenuItem>
+          mode="horizontal"
+          onClick={onLogout}>
+          <SubMenu title={<span><Icon type="user"/> {user.name}</span>} className="fr">
+              <MenuItem key="logout">
                 <Icon type="logout"/>登出
               </MenuItem>
           </SubMenu>
