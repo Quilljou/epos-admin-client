@@ -30,6 +30,7 @@ function checkLogin(response) {
   if(response.data && response.data.login === false) {
     hashHistory.push('/login');
     Auth.logout();
+    message.error(response.data.message);
     return false;
   }
   return response

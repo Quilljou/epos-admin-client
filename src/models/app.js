@@ -7,11 +7,11 @@ export default{
         login: false,
         loginButtonLoading: false,
         user: {
-            name: 'quill'
+            name: 'Boss'
         }
     },
     subscriptions: {
-        
+
     },
     effects: {
 

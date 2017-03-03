@@ -8,10 +8,28 @@ export default {
       VersionModalVisible: false,
       page: 1,
       apk: null,
-      uploadLoading: false,
-      updateRecords: []
+      updateRecords: [],
+      currentStep: 0,
+      infoDone: false,
+      uploadPercent: 0,
+      apkUrl: ''
   },
   reducers: {
+    uploading (state,action) {
+      return {...state, uploadPercent: action.payload}
+    },
+    uploadDone (state,action) {
+      return {...state, apkUrl: action.payload}
+    },
+    changeStep (state,action) {
+      switch (action.payload.type) {
+        case 'next':
+          return {...state, currentStep: state.currentStep + 1 }
+          break;
+        default:
+          return {...state, currentStep: state.currentStep - 1 }
+      }
+    },
     querySuccess (state,action) {
       const { total, records, page } = action.payload;
       return {...state, total, page, updateRecords: records }
@@ -25,12 +43,8 @@ export default {
       return {...state, VersionModalVisible: true}
     },
     hideVersionModal (state, action ) {
-      console.log('hide');
-      return {...state, VersionModalVisible: false}
-    },
-    upload(state, action) {
-      const apk  = action.payload;
-      return Object.assign(state,{apk});
+      // 关闭modal,重置step
+      return {...state, VersionModalVisible: false, currentStep: 0, apkUrl: ''}
     },
     showUploadLoading (state, action) {
       return {...state, uploadLoading: true}
@@ -40,9 +54,7 @@ export default {
       const updateRecords = state.updateRecords;
 
       return {...state,
-        uploadLoading: false,
-        updateRecords,
-        VersionModalVisible: false}
+        updateRecords}
     }
   },
   effects: {

@@ -1,147 +1,268 @@
 import React from 'react';
-import { Modal, Form, Select, Input, Switch, Upload, Button, Icon } from 'antd';
+import { Modal, Form, Select, Input, Switch, Upload, Button, Icon, Progress, Steps, message } from 'antd';
+import Auth from '../../utils/auth';
+// import { checkLogin, check}
 
 const FormItem = Form.Item;
 const Option = Select.Option;
+const Step = Steps.Step;
+const Dragger = Upload.Dragger;
+
+    function checkData (response) {
+        if(response.login === false) {
+            Auth.logout();
+            hashHistory.push('/login');
+            message.error(response.message);
+            return false;
+        }else if( response.success === false ){
+            message.error(response.message);
+            return false;
+        }else {
+            return response.data;
+        }
+    }
+
+    const VersionModal =
+            function(props) {
+                // var formData = new FormData()
+                const {VersionModalVisible,onAdd,onHideVersionModal, currentStep, onNextStep, onPreviosStep, uploadPercent,onUploading, apkUrl, onUploadDone } = props;
+
+                const StepOne = function () {
+                    const Draggerprops = {
+                          name: 'apk',
+                          showUploadList: true,
+                          action: '/version/apk/upload',
+                          headers: {
+                              Authorization: 'Bearer ' + Auth.getToken()
+                          },
+                          onChange ({event,file}) {
+                              if(file.status === 'done') {
+                                message.success(`${file.name} 文件成功上传`);
+                                const data = checkData(file.response)
+                                onUploadDone(data);
+                                onNextStep();
+                              }
+                          }
+                        //   onChange({event,file}) {
+                        //       if(file.status === 'loading') {
+                        //           let percent = Number(event.percent.toFixed(0))
+                        //           onUploading(percent);
+                        //       }
+                        //     // if (status === 'uploading') {
+                        //     //   if(event && event.percent) {
+                        //     //
+                        //     //   }
+                        //     // }
+                        //     if (status === 'done') {
+                        //       message.success(`${file.name} file uploaded successfully.`);
+                        //     } else if (status === 'error') {
+                        //       message.error(`${file.name} file upload failed.`);
+                        //     }
+                        //     // else if (status === 'done') {
+                        //     //     console.log(file.response);
+                        //     //   message.success(`${file.name} 文件上传成功`);
+                        //     // } else if (status === 'error') {
+                        //     //   message.error(`${file.name} 文件上传出错`);
+                        //     // }
+                        //   }
+                        };
+                    return (
+                        // <div>
+                            <div style={{ marginTop: 16, height: 180 }}>
+                                <Dragger {...Draggerprops}>
+                                  <p className="ant-upload-drag-icon">
+                                    <Icon type="inbox" />
+                                  </p>
+                                  <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                                  <p className="ant-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files</p>
+                                </Dragger>
+                                {/* {
+                                  uploadPercent > 0 ?
+                                  <div className="mt">
+                                      <Progress  percent={uploadPercent} />
+                                  </div>
+                                   :
+                                  ''
+                                } */}
+                              </div>
 
 
-
-
-    const VersionModal = Form.create()(
-            (props) => {
-                var formData = new FormData()
-                const {VersionModalVisible,onAdd, uploadLoading,onHideVersionModal, form} = props;
-                const { getFieldDecorator, validateFields, getFieldsValue } = form;
-
-
-                function handleOk() {
-                    const values = getFieldsValue();
-
-                    Object.keys(values).forEach((key) => {
-                        if(values[key]) {
-                            formData.append(key,values[key]);
-                        }
-                    })
-                    const fileNode = document.getElementById('file');
-                    const file = fileNode.files[0];
-                    formData.append('apk',file,file.name)
-                    formData.append('productID','1')
-                    if(formData.has('apk')) {
-                        onAdd(formData);
-                    }
+                        // </div>
+                    )
                 }
 
-                const formItemLayout = {
-                  labelCol: { span: 6 },
-                  wrapperCol: { span: 14 }
-                };
+                 function StepTwo(formprops) {
+
+                    const formItemLayout = {
+                      labelCol: { span: 6 },
+                      wrapperCol: { span: 14 }
+                    };
+                    const { getFieldDecorator, getFieldsValue } = formprops.form;
+
+
+                    function handleSubmit() {
+                        var data = getFieldsValue();
+                        data.productID = '1';
+                        data['apk_url'] = apkUrl;
+                        onAdd(data);
+                        onNextStep();
+                    }
+
+                    return(
+                        <div>
+                            <FormItem label="最大版本号"
+                                {...formItemLayout}>
+                                {getFieldDecorator('max_version',{
+                                    rules: [{
+                                        required: true,
+                                        message: '不能为空'
+                                    }]
+                                })(
+                                    <Input/>
+                                )}
+                            </FormItem>
+                            <FormItem label="版本号"
+                                {...formItemLayout}>
+                                {getFieldDecorator('version_code',{
+                                    rules: [{
+                                        required: true,
+                                        message: '不能为空'
+                                    }]
+                                })(
+                                    <Input/>
+                                )}
+                            </FormItem>
+                            <FormItem label="升级说明"
+                                {...formItemLayout}>
+                                {getFieldDecorator('message',{
+                                    rules: [{
+                                        required: true,
+                                        message: '不能为空'
+                                    }]
+                                })(
+                                    <textarea style={{width:'100%'}}/>
+                                )}
+                            </FormItem>
+                            <FormItem label="是否有效"
+                                {...formItemLayout}>
+                                {getFieldDecorator('status',{
+                                    initialValue: '1',
+                                    rules: [{
+                                        required: true,
+                                        message: '不能为空'
+                                    }]
+                                })(
+                                    <Select>
+                                        <Option value="1">是</Option>
+                                        <Option value="2">否</Option>
+                                    </Select>
+                                )}
+                            </FormItem>
+                            <FormItem label="下载模式"
+                                {...formItemLayout}>
+                                {getFieldDecorator('download_mode',{
+                                    initialValue: '1',
+                                    rules: [{
+                                        required: true,
+                                        message: '不能为空'
+                                    }]
+                                })(
+                                    <Select>
+                                        <Option value="1">ftp下载</Option>
+                                        <Option value="2">浏览器下载</Option>
+                                    </Select>
+                                )}
+                            </FormItem>
+                            <FormItem
+                                {...formItemLayout}>
+                                <div style={{textAlign: 'right'}}>
+                                    <Button onClick={onHideVersionModal}>取消</Button>
+                                    <Button type="primary" onClick={handleSubmit}>提交</Button>
+                                </div>
+                            </FormItem>
+                        </div>
+                    )
+                }
+
+                StepTwo = Form.create()(StepTwo)
+
+
+                function StepThree () {
+                    return (
+                        <p style={{textAlign: 'center'}}>
+                            <Icon type="check-circle" style={{fontSize: '60px',color:'#108ee9'}}/>
+                        </p>
+                    )
+                }
+
+                // function Footer() {
+                //     switch (currentStep) {
+                //         case 0:
+                //             return (
+                //                 <span></span>
+                //                 <Button type="primary" onClick={onNextStep}>下一步</Button>
+                //             )
+                //             break;
+                //         case 1:
+                //             return (
+                //                 <div>
+                //                     <Button onClick={onPreviosStep}>上一步</Button>
+                //                     &nbsp;
+                //                     <Button type="primary" onClick={onNextStep}>提交</Button>
+                //                 </div>
+                //             )
+                //             break;
+                //         case 2:
+                //             return (
+                //                 <Button type="primary" onClick={onHideVersionModal}>完成</Button>
+                //             )
+                //             break;
+                //     }
+                // }
+
+                function CurrentContent () {
+                    switch (currentStep) {
+                        case 0:
+                            return (
+                                <StepOne></StepOne>
+                            )
+                            break;
+                        case 1:
+                            return(
+                                <StepTwo></StepTwo>
+                            )
+                            break;
+                        default:
+                            return(
+                                <StepThree></StepThree>
+                            )
+                    }
+                }
 
                 return (
                     <Modal
                         visible= {VersionModalVisible}
-                        onOk= {handleOk}
+                        // onOk= {handleOk}
                         onCancel = { onHideVersionModal }
-                        confirmLoading = { uploadLoading }
-                        title="版本更新">
-                        <FormItem label="apk文件"
-                            {...formItemLayout}>
-                            {/* {getFieldDecorator('apk',{
-                                rules: [{
-                                    required: true,
-                                    message: '不能为空'
-                                }]
-                            })(
+                        width = "700px"
+                        title="版本更新"
+                        footer={null}>
+                        <Steps current={currentStep}>
+                            <Step title="上传文件" icon={<Icon type="cloud-upload-o" />}/>
+                            <Step title="填写信息" icon={<Icon type="edit" />}/>
+                            <Step title="完成" icon={<Icon type="check-circle" />}/>
+                        </Steps>
 
-                            )} */}
-                            <input type="file" id="file"/>
-                            {/* <Upload
-                                action='/'
-                                // beforeUpload={cancel}
-                                fileList={apk}
-                                onChange={onUpload}
-                                >
-                                <Button>
-                                  <Icon type="upload" /> 点击上传
-                                </Button>
-                          </Upload> */}
-                        </FormItem>
-                        {/* <FormItem label="产品ID"
-                            {...formItemLayout}>
-                            {getFieldDecorator('productID',{
-                                rules: [{
-                                    required: true,
-                                    message: '不能为空'
-                                }]
-                            })(
-                                <Input/>
-                            )}
-                        </FormItem> */}
-                        <FormItem label="最大版本号"
-                            {...formItemLayout}>
-                            {getFieldDecorator('max_version',{
-                                rules: [{
-                                    required: true,
-                                    message: '不能为空'
-                                }]
-                            })(
-                                <Input/>
-                            )}
-                        </FormItem>
-                        <FormItem label="版本号"
-                            {...formItemLayout}>
-                            {getFieldDecorator('version_code',{
-                                rules: [{
-                                    required: true,
-                                    message: '不能为空'
-                                }]
-                            })(
-                                <Input/>
-                            )}
-                        </FormItem>
-                        <FormItem label="是否有效"
-                            {...formItemLayout}>
-                            {getFieldDecorator('status',{
-                                initialValue: '1',
-                                rules: [{
-                                    required: true,
-                                    message: '不能为空'
-                                }]
-                            })(
-                                <Select>
-                                    <Option value="1">是</Option>
-                                    <Option value="2">否</Option>
-                                </Select>
-                            )}
-                        </FormItem>
-                        <FormItem label="下载模式"
-                            {...formItemLayout}>
-                            {getFieldDecorator('download_mode',{
-                                initialValue: '1',
-                                rules: [{
-                                    required: true,
-                                    message: '不能为空'
-                                }]
-                            })(
-                                <Select>
-                                    <Option value="1">ftp下载</Option>
-                                    <Option value="2">浏览器下载</Option>
-                                </Select>
-                            )}
-                        </FormItem>
-                        <FormItem label="升级说明"
-                            {...formItemLayout}>
-                            {getFieldDecorator('message',{
-                                rules: [{
-                                    required: true,
-                                    message: '不能为空'
-                                }]
-                            })(
-                                <textarea style={{width:'100%'}}/>
-                            )}
-                        </FormItem>
+                        <div style={{paddingBottom: '50px'}}>
+                            <CurrentContent ></CurrentContent>
+                        </div>
+                        {/* <div className="mt">
+                            <Footer/>
+                        </div> */}
+
                     </Modal>
                 )
-        })
+        }
 
 
 

@@ -14,7 +14,7 @@ export async function add(payload) {
     return request({
         url: getUrl('/version'),
         method: 'post',
-        headers: {'Content-Type': 'multipart/form-data'},
-        data: payload
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        data: qs.stringify(payload)
     })
 }

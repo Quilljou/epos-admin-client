@@ -5,11 +5,10 @@ import VersionModal from '../components/Modal/VersionModal'
 import UpdateTimeline from '../components/UpdateTimeLine';
 
 function Android({dispatch,android}) {
-    const { VersionModalVisible, uploadLoading, updateRecords,total, page } = android;
+    const { VersionModalVisible, updateRecords,total, page, currentStep, uploadPercent,apkUrl } = android;
 
     const VersionModalProps = {
         VersionModalVisible,
-        uploadLoading,
         onAdd(data) {
             dispatch({
                 type: 'android/add',
@@ -19,6 +18,37 @@ function Android({dispatch,android}) {
         onHideVersionModal () {
             dispatch({
                 type: 'android/hideVersionModal'
+            })
+        },
+        uploadPercent,
+        onUploading (percent) {
+            dispatch ({
+                type: "android/uploading",
+                payload: percent
+            })
+        },
+        onUploadDone (data) {
+            dispatch({
+                type: 'android/uploadDone',
+                payload: data
+            })
+        },
+        currentStep,
+        apkUrl,
+        onNextStep () {
+            dispatch({
+                type: 'android/changeStep',
+                payload: {
+                    type: 'next'
+                }
+            })
+        },
+        onPreviosStep () {
+            dispatch({
+                type: 'android/changeStep',
+                payload: {
+                    type: 'previous'
+                }
             })
         }
     }
@@ -36,7 +66,8 @@ function Android({dispatch,android}) {
             })
         },
         total,
-        page
+        page,
+
     }
 
     function onShowVersionModal() {

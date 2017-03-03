@@ -19,7 +19,7 @@ function RouterConfig({ history }) {
     return (
         <Router history={history}>
             <Route path="/login" component={ Login }></Route>
-            <Route path="/" component={ App }>
+            <Route path="/" component={ App } onEnter={requireAuth}>
                 {/* <IndexRoute component={ Dashboard } /> */}
                 <IndexRoute component={Tenant}></IndexRoute>
 

@@ -24,10 +24,22 @@ html, body, :global(#root) {
     margin-bottom: 15px !important;
 }
 
+:global(.pb) {
+    padding-bottom: 15px !important;
+}
+
+:global(.pt) {
+    padding-top: 15px !important;
+}
 :global(td) {
   text-align: center;
 }
 
 :global(th) {
+  text-align: center !important;
+}
+
+
+:global(text-center) {
   text-align: center !important;
 }
