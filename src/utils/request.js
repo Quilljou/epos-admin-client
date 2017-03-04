@@ -75,6 +75,6 @@ export  function request (options) {
 }
 
 export function getUrl(url) {
-    var base = 'http://localhost:8888/api';
+    var base = 'http://112.74.34.58:8888';
     return base + url;
 }
