@@ -2,6 +2,8 @@ import React, {PropTypes} from 'react'
 import { Button, Row, Form, Input } from 'antd'
 import { connect } from 'dva';
 import styles from './main.css';
+import Helmet from "react-helmet";
+
 
 const FormItem = Form.Item
 //
@@ -87,6 +89,7 @@ function Login(props) {
 
     return  (
         <div className={styles.form}>
+            <Helmet title="登录" />
             <div className={styles.logo}>
               <span>EPOS商户后台</span>
             </div>

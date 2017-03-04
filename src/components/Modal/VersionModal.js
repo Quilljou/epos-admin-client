@@ -97,54 +97,64 @@ const Dragger = Upload.Dragger;
                       labelCol: { span: 6 },
                       wrapperCol: { span: 14 }
                     };
-                    const { getFieldDecorator, getFieldsValue } = formprops.form;
+                    const { getFieldDecorator, getFieldsValue, validateFieldsAndScroll } = formprops.form;
 
 
                     function handleSubmit() {
-                        var data = getFieldsValue();
-                        data.productID = '1';
-                        data['apk_url'] = apkUrl;
-                        onAdd(data);
-                        onNextStep();
+                        validateFieldsAndScroll( (errors, values) => {
+                            if(errors) {
+                                return;
+                            }
+                            var data = values;
+                            data.productID = '1';
+                            data['apk_url'] = apkUrl;
+                            onAdd(data);
+                            onNextStep();
+                        })
+
                     }
 
                     return(
                         <div>
                             <FormItem label="最大版本号"
-                                {...formItemLayout}>
+                                {...formItemLayout}
+                                hasFeedback>
                                 {getFieldDecorator('max_version',{
                                     rules: [{
                                         required: true,
                                         message: '不能为空'
                                     }]
                                 })(
-                                    <Input/>
+                                    <Input placeholder="最大版本号"/>
                                 )}
                             </FormItem>
                             <FormItem label="版本号"
-                                {...formItemLayout}>
+                                {...formItemLayout}
+                                hasFeedback>
                                 {getFieldDecorator('version_code',{
                                     rules: [{
                                         required: true,
                                         message: '不能为空'
                                     }]
                                 })(
-                                    <Input/>
+                                    <Input placeholder="版本号"/>
                                 )}
                             </FormItem>
                             <FormItem label="升级说明"
-                                {...formItemLayout}>
+                                {...formItemLayout}
+                                hasFeedback>
                                 {getFieldDecorator('message',{
                                     rules: [{
                                         required: true,
                                         message: '不能为空'
                                     }]
                                 })(
-                                    <textarea style={{width:'100%'}}/>
+                                    <textarea style={{width:'100%'}} placeholder="以句号分隔升级说明信息"/>
                                 )}
                             </FormItem>
                             <FormItem label="是否有效"
-                                {...formItemLayout}>
+                                {...formItemLayout}
+                                hasFeedback>
                                 {getFieldDecorator('status',{
                                     initialValue: '1',
                                     rules: [{
@@ -159,7 +169,8 @@ const Dragger = Upload.Dragger;
                                 )}
                             </FormItem>
                             <FormItem label="下载模式"
-                                {...formItemLayout}>
+                                {...formItemLayout}
+                                hasFeedback>
                                 {getFieldDecorator('download_mode',{
                                     initialValue: '1',
                                     rules: [{
@@ -177,6 +188,8 @@ const Dragger = Upload.Dragger;
                                 {...formItemLayout}>
                                 <div style={{textAlign: 'right'}}>
                                     <Button onClick={onHideVersionModal}>取消</Button>
+                                    &nbsp;
+                                    &nbsp;
                                     <Button type="primary" onClick={handleSubmit}>提交</Button>
                                 </div>
                             </FormItem>
@@ -253,7 +266,7 @@ const Dragger = Upload.Dragger;
                             <Step title="完成" icon={<Icon type="check-circle" />}/>
                         </Steps>
 
-                        <div style={{paddingBottom: '50px'}}>
+                        <div style={{padding: '50px 0'}}>
                             <CurrentContent ></CurrentContent>
                         </div>
                         {/* <div className="mt">

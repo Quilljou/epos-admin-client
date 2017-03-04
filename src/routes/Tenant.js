@@ -4,6 +4,7 @@ import { Table, Button, Popconfirm, Dropdown, Menu, Icon } from 'antd';
 import {connect} from 'dva';
 import UserModal from '../components/Modal/UserModal';
 import PwdModal from '../components/Modal/PwdModal';
+import Helmet from 'react-helmet';
 
 // import styles from './main.css';
 const  MenuItem = Menu.Item;
@@ -129,6 +130,7 @@ function Tenant({ dispatch, tenant }) {
       render: (text, record, index) => {
         return (
           <div>
+              <Helmet title="商户管理"></Helmet>
             <a onClick={() => onShowPwdModal(text,record,index)}>修改密码</a> &nbsp;&nbsp;
             <Dropdown overlay={
                 <Menu onClick={(e) => onRenew(record, e)}>
@@ -228,7 +230,7 @@ function Tenant({ dispatch, tenant }) {
 
     return (
         <div>
-            <div>
+            <div className="mb">
               <Button type="primary" onClick={onShowUserModal}>新增</Button>
             </div>
             <Table {...TableProps} />

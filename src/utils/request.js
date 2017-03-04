@@ -50,7 +50,6 @@ export  function request (options) {
           options.headers = {};
         }
         options.headers.Authorization = "Bearer " + token;
-        options.withCredentials = true;
     //   options.headers = Object.assign({},options.headers,headers)
     }
 
@@ -75,6 +74,7 @@ export  function request (options) {
 }
 
 export function getUrl(url) {
-    var base = 'http://112.74.34.58:8888';
-    return base + url;
+  const base = 'http://112.74.34.58:8888';
+  // var base = 'http://localhost:8888/api';
+  return base + url;
 }

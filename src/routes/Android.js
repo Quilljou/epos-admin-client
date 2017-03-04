@@ -3,6 +3,7 @@ import {connect} from 'dva';
 import {Button} from 'antd';
 import VersionModal from '../components/Modal/VersionModal'
 import UpdateTimeline from '../components/UpdateTimeLine';
+import Helmet from "react-helmet";
 
 function Android({dispatch,android}) {
     const { VersionModalVisible, updateRecords,total, page, currentStep, uploadPercent,apkUrl } = android;
@@ -78,6 +79,7 @@ function Android({dispatch,android}) {
 
     return (
         <div>
+            <Helmet title="安卓 | 版本管理" />
             <Button type="primary" onClick={onShowVersionModal}>版本更新</Button>
             <UpdateTimeline {...UpdateTimelineProps}></UpdateTimeline>
             <VersionModal {...VersionModalProps}></VersionModal>

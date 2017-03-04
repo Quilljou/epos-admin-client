@@ -12,11 +12,16 @@ const UserModal = Form.create()(
             };
 
         const {pwdModalVisible,onUpdatePassword, hidePwdModal, form} = props;
-        const { getFieldDecorator, validateFields, getFieldsValue } = form;
+        const { getFieldDecorator, validateFields, getFieldsValue, validateFieldsAndScroll } = form;
 
         function handleOk() {
             // todo 表单验证
-            onUpdatePassword(getFieldsValue());
+            validateFieldsAndScroll( (errors,values) => {
+                if(errors) {
+                    return;
+                }
+                onUpdatePassword(values);
+            })
         }
 
 
@@ -27,7 +32,8 @@ const UserModal = Form.create()(
                 onCancel = {hidePwdModal}>
                 <Form>
                     <FormItem label="新密码"
-                        {...formItemLayout}>
+                        {...formItemLayout}
+                        hasFeedback>
                         {getFieldDecorator('newPasd',{
                             rules: [{
                                 required: true,
@@ -38,7 +44,8 @@ const UserModal = Form.create()(
                         )}
                     </FormItem>
                     <FormItem label="确认密码"
-                        {...formItemLayout}>
+                        {...formItemLayout}
+                        hasFeedback>
                         {getFieldDecorator('newPasd_confirmation',{
                             rules: [{
                                 required: true,

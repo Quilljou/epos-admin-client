@@ -51,7 +51,7 @@ export default {
     },
     addSuccess (state, action) {
       state.updateRecords.unshift(action.payload);
-      const updateRecords = state.updateRecords;
+      const updateRecords = state.updateRecords.slice(0,5);
 
       return {...state,
         updateRecords}

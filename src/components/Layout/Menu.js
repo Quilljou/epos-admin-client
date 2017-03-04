@@ -19,14 +19,14 @@ function Menus() {
                 </Link>
             </Menu.Item> */}
 
-            <Menu.Item key="user">
+            <Menu.Item key="tenant">
                 <Link to="/tenant">
                     <Icon type="user"></Icon>
                     商户管理
                 </Link>
             </Menu.Item>
             <SubMenu key="sub1" title={<span><Icon type="upload" /><span>版本管理</span></span>}>
-                <Menu.Item>
+                <Menu.Item key="android">
                     <Link to="/android">
                         安卓客户端
                     </Link>
