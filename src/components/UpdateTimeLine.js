@@ -1,5 +1,5 @@
 import React from 'react';
-import { Timeline } from 'antd';
+import { Timeline, Icon } from 'antd';
 
 const TimelineItem = Timeline.Item;
 
@@ -23,9 +23,11 @@ export default function UpdateTimeline(props) {
                 {updateRecords.map( (item,index) => {
                     return <TimelineItem key={index}>
                             <h2>{item['created_at']}</h2><span>{whichMode(item.download_mode)}</span>
-                            <ul>
+                            {/* <ul>
                                 <li>{item.message}</li>
-                            </ul>
+                            </ul> */}
+                            <h3 className="mt"><Icon type="download"></Icon> 更新说明</h3>
+                            <div dangerouslySetInnerHTML={{__html: item.message}}></div>
                             </TimelineItem>
                 })}
             </Timeline>

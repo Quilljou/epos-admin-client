@@ -108,10 +108,28 @@ const Dragger = Upload.Dragger;
                             var data = values;
                             data.productID = '1';
                             data['apk_url'] = apkUrl;
+
+                            data.message = strToPara(data.message);
+
                             onAdd(data);
-                            onNextStep();
                         })
 
+
+                        function strToPara (str) {
+                            var strArr = str.split('。');
+                            if(strArr.length) {
+                                return strArr.map( (item,index)  => {
+                                    if(item.length) {
+                                        return pFactory(item,index);
+                                    }
+                                }).join('')
+                            }
+                            return str;
+                        }
+
+                        function pFactory(string,index) {
+                            return '<p> '  + (index + 1) + '. ' + string +'</p>';
+                        }
                     }
 
                     return(

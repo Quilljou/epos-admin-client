@@ -40,6 +40,6 @@ html, body, :global(#root) {
 }
 
 
-:global(text-center) {
+:global(.text-center) {
   text-align: center !important;
 }

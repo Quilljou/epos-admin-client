@@ -37,10 +37,11 @@ const UserModal = Form.create()(
                         {getFieldDecorator('newPasd',{
                             rules: [{
                                 required: true,
-                                message: '不能为空'
+                                len: 6,
+                                message: '不能为空且为六位数字'
                             }]
                         })(
-                            <Input/>
+                            <Input placeholder="六位数字"/>
                         )}
                     </FormItem>
                     <FormItem label="确认密码"
@@ -49,10 +50,11 @@ const UserModal = Form.create()(
                         {getFieldDecorator('newPasd_confirmation',{
                             rules: [{
                                 required: true,
-                                message: '不能为空'
+                                len: 6,
+                                message: '不能为空且为六位数字'
                             }]
                         })(
-                            <Input/>
+                            <Input placeholder="重复确认密码"/>
                         )}
                     </FormItem>
                 </Form>

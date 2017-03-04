@@ -6,10 +6,13 @@ import Android from './routes/Android'
 import Tenant from './routes/Tenant'
 import Login from './routes/Login'
 import Auth from './utils/auth';
+import NotFound from './routes/NotFound'
 
 
 
 function requireAuth ({ params }, replace) {
+    console.log(params);
+    console.log(Auth.isLoggedIn());
     if(!Auth.isLoggedIn()) {
         replace('/login');
     }
@@ -21,11 +24,12 @@ function RouterConfig({ history }) {
             <Route path="/login" component={ Login }></Route>
             <Route path="/" component={ App } onEnter={requireAuth}>
                 {/* <IndexRoute component={ Dashboard } /> */}
-                <IndexRoute component={Tenant}></IndexRoute>
+                <IndexRoute component={Tenant} onEnter={requireAuth}></IndexRoute>
 
                 <Route path="/tenant" component={Tenant} onEnter={requireAuth}></Route>
                 <Route path="/android" component={Android} onEnter={requireAuth}></Route>
             </Route>
+            <Route path="*" component={NotFound}></Route>
         </Router>
     )
 }

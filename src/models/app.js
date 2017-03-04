@@ -6,6 +6,7 @@ export default{
     state: {
         login: false,
         loginButtonLoading: false,
+        siderOpen: true,
         user: {
             name: 'Boss'
         }
@@ -14,9 +15,11 @@ export default{
 
     },
     effects: {
-
     },
     reducers: {
-
+        changeNavStatus(state,action) {
+            console.log(action);
+            return {...state,siderOpen: !state.siderOpen}
+        }
     }
 }

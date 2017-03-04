@@ -54,7 +54,8 @@ export default {
       const updateRecords = state.updateRecords.slice(0,5);
 
       return {...state,
-        updateRecords}
+        updateRecords,
+        currentStep: state.currentStep + 1}
     }
   },
   effects: {
@@ -66,7 +67,7 @@ export default {
               type: 'querySuccess',
               payload: data
             })
-          }
+        }
       },
       *add ({payload}, { call, put}) {
           yield put({type: 'showUploadLoading'})
@@ -76,7 +77,7 @@ export default {
               type: 'addSuccess',
               payload: data
             })
-          }
+        }
       },
       *seeMore ({payload}, { call, put}) {
           const data = yield call(query,payload);

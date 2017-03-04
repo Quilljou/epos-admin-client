@@ -9,7 +9,7 @@ import Login from './Login';
 
 
 function App({ dispatch, children, app }) {
-    const { login,loginButtonLoading, onOk, user } = app;
+    const { login,loginButtonLoading, onOk, user, changeNavStatus,siderOpen } = app;
     const siderProps = {
         // menus: menus.data
     }
@@ -28,21 +28,28 @@ function App({ dispatch, children, app }) {
             }
         },
         user,
-        // changeNavStatus (status) {
-        //     dispatch () {
-        //
-        //     }
-        // }
+        changeNavStatus () {
+            dispatch ({
+                type: 'app/changeNavStatus'
+            })
+        }
     }
 
 
     return (
         <div>{
             <div>
-                <aside className={styles.sider}>
+                <aside
+                    style={{
+                        left: siderOpen ? '0' : '-200px'
+                    }}
+                    className={styles.sider}>
                     <Sider />
                 </aside>
-                <main className={styles.main}>
+                <main className={styles.main}
+                    style={{
+                        marginLeft: siderOpen ? '200px' : '0'
+                    }}>
                     <Header {...HeaderProps}/>
                     {/* <Bread /> */}
                     <div className={styles.container}>
