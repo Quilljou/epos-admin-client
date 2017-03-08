@@ -18,6 +18,7 @@ export default function UpdateTimeline(props) {
 
     return (
         <div>
+            <h1 className="mt mb">更新日志</h1>
             <Timeline pending={<a onClick={total >= page * 5  ? onSeeMore : null}>{total >= page * 5 ? '查看更多': '没有更多了'}</a>}>
                 {updateRecords.map( (item,index) => {
                     return <TimelineItem key={index}>

@@ -25,19 +25,13 @@ function Menus() {
                     商户管理
                 </Link>
             </Menu.Item>
-            <Menu.Item key="version">
-                <Link to="/android">
-                    <Icon type="upload"></Icon>
-                    版本管理
-                </Link>
-            </Menu.Item>
-            {/* <SubMenu key="sub1" title={<span><Icon type="upload" /><span>版本管理</span></span>}>
+            <SubMenu key="sub1" title={<span><Icon type="upload" /><span>版本管理</span></span>}>
                 <Menu.Item key="android">
                     <Link to="/android">
                         安卓客户端
                     </Link>
                 </Menu.Item>
-              </SubMenu> */}
+              </SubMenu>
         </Menu>
   );
 }

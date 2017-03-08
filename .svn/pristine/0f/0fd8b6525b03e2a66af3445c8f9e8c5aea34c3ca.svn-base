@@ -1,0 +1,45 @@
+
+html, body, :global(#root) {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #f3f3f3;
+
+}
+
+:global(.fl) {
+    float: left;
+}
+
+:global(.fr) {
+    float: right !important;
+}
+
+:global(.mt) {
+    margin-top: 15px !important;
+}
+
+
+:global(.mb) {
+    margin-bottom: 15px !important;
+}
+
+:global(.pb) {
+    padding-bottom: 15px !important;
+}
+
+:global(.pt) {
+    padding-top: 15px !important;
+}
+:global(td) {
+  text-align: center;
+}
+
+:global(th) {
+  text-align: center !important;
+}
+
+
+:global(.text-center) {
+  text-align: center !important;
+}

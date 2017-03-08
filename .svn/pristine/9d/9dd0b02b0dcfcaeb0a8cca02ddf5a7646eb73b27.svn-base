@@ -1,5 +1,4 @@
 import { query, add } from '../services/android'
-import { addProduct, queryProduct } from '../services/product'
 
 
 export default {
@@ -7,16 +6,13 @@ export default {
   state: {
       total: 0,
       VersionModalVisible: false,
-      productModalVisible: false,
       page: 1,
       apk: null,
       updateRecords: [],
-      product: [],
       currentStep: 0,
       infoDone: false,
       uploadPercent: 0,
-      apkUrl: '',
-      currentItem: null,
+      apkUrl: ''
   },
   reducers: {
     uploading (state,action) {
@@ -24,12 +20,6 @@ export default {
     },
     uploadDone (state,action) {
       return {...state, apkUrl: action.payload}
-    },
-    hideProductModal (state, action ) {
-      return {...state, productModalVisible: false}
-    },
-    showProductModal (state, action) {
-      return {...state, productModalVisible: true}
     },
     changeStep (state,action) {
       switch (action.payload.type) {
@@ -44,17 +34,13 @@ export default {
       const { total, records, page } = action.payload;
       return {...state, total, page, updateRecords: records }
     },
-    queryProductSuccess (state,action) {
-      console.log(action);
-      return {...state,product: action.payload }
-    },
     seeMoreSuccess (state,action) {
       const { total, records, page } = action.payload;
       const updateRecords = state.updateRecords.concat(records);
       return {...state, total, page, updateRecords }
     },
     showVersionModal (state, action) {
-      return {...state, VersionModalVisible: true, currentItem: action.payload}
+      return {...state, VersionModalVisible: true}
     },
     hideVersionModal (state, action ) {
       // 关闭modal,重置step
@@ -70,28 +56,10 @@ export default {
       return {...state,
         updateRecords,
         currentStep: state.currentStep + 1}
-    },
-    addProductSuccess (state, action) {
-      state.product.unshift(action.payload);
-      const product = state.product;
-
-      return {...state,
-        product,
-        }
     }
   },
   effects: {
-      *addProduct ({payload}, { call, put}) {
-          const data = yield call(addProduct,payload);
-          if(data) {
-            yield put({
-              type: 'addProductSuccess',
-              payload: data
-            })
-        }
-      },
-      *query ({payload}, { call, put,select}) {
-
+      *query ({payload}, { call, put}) {
           const data = yield call(query,payload);
           if(data) {
             data.page = payload.page;
@@ -101,20 +69,8 @@ export default {
             })
         }
       },
-      *queryProduct ({payload}, { call, put, select}) {
-        const state = select();
-        console.log(state);
-          const data = yield call(queryProduct,payload);
-          if(data) {
-            yield put({
-              type: 'queryProductSuccess',
-              payload: data
-            })
-        }
-      },
       *add ({payload}, { call, put}) {
-          // payload.productID = currentItem.productID;
-          console.log(arguments);
+          yield put({type: 'showUploadLoading'})
           const data = yield call(add,payload);
           if(data) {
             yield put({
@@ -138,16 +94,13 @@ export default {
     setup ({ dispatch, history }) {
          history.listen(location => {
              if(location.pathname === '/android') {
-                //  dispatch({
-                //      type: 'query',
-                //      payload: {
-                //        productID: 1,
-                //        perPage: 5,
-                //        page: 1
-                //      }
-                //  })
                  dispatch({
-                     type: 'queryProduct',
+                     type: 'query',
+                     payload: {
+                       productID: 1,
+                       perPage: 5,
+                       page: 1
+                     }
                  })
              }
          })

@@ -31,7 +31,7 @@ const Dragger = Upload.Dragger;
                     const Draggerprops = {
                           name: 'apk',
                           showUploadList: true,
-                          action: '/api/version/apk/upload',
+                          action: '/version/apk/upload',
                           headers: {
                               Authorization: 'Bearer ' + Auth.getToken()
                           },
@@ -106,6 +106,7 @@ const Dragger = Upload.Dragger;
                                 return;
                             }
                             var data = values;
+                            data.productID = '1';
                             data['apk_url'] = apkUrl;
 
                             data.message = strToPara(data.message);

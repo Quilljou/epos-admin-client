@@ -1,0 +1,73 @@
+.sider {
+    width: 200px;
+    height: 100%;
+    background: #3e3e3e;
+    position: fixed;
+}
+
+.main  {
+    margin-left: 200px;
+}
+
+.sider,
+.main {
+    transition: all 250ms ease;
+}
+
+
+.container {
+    background: #fff;
+    padding: 20px;
+    padding-bottom: 60px;
+    margin: 20px;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.1), -1px -1px 1px rgba(0,0,0,0.1);
+}
+
+.btnwrap {
+    margin-bottom: 15px;
+    text-align: right;
+}
+
+
+.form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -160px 0 0 -160px;
+  width: 320px;
+  height: 320px;
+  padding: 36px;
+  box-shadow: 0 0 100px rgba(0,0,0,.08);
+
+}
+
+.form button {
+  width: 100%;
+}
+
+
+.logo {
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  cursor: pointer;
+  margin-bottom: 24px;
+}
+
+
+.ant-spin-container,
+.ant-spin-nested-loading {
+  height: 100%;
+}
+
+.logo img {
+  width: 40px;
+  margin-right: 8px;
+}
+
+.logo span {
+  vertical-align: text-bottom;
+  font-size: 16px;
+  text-transform: uppercase;
+  display: inline-block;
+}
