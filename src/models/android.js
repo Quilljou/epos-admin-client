@@ -1,5 +1,4 @@
-import { query, add } from '../services/android'
-import { addProduct, queryProduct } from '../services/product'
+import { addProduct, queryProduct, deleteProduct } from '../services/product'
 
 
 export default {
@@ -8,6 +7,7 @@ export default {
       total: 0,
       VersionModalVisible: false,
       productModalVisible: false,
+      TimeLineVisible: false,
       page: 1,
       apk: null,
       updateRecords: [],
@@ -17,6 +17,7 @@ export default {
       uploadPercent: 0,
       apkUrl: '',
       currentItem: null,
+      currentShow: null
   },
   reducers: {
     uploading (state,action) {
@@ -42,7 +43,10 @@ export default {
     },
     querySuccess (state,action) {
       const { total, records, page } = action.payload;
-      return {...state, total, page, updateRecords: records }
+      return {...state, total, page, updateRecords: records,TimeLineVisible: true }
+    },
+    showCurrent (state,action) {
+      return {...state,currentShow: action.payload }
     },
     queryProductSuccess (state,action) {
       console.log(action);
@@ -64,20 +68,32 @@ export default {
       return {...state, uploadLoading: true}
     },
     addSuccess (state, action) {
-      state.updateRecords.unshift(action.payload);
-      const updateRecords = state.updateRecords.slice(0,5);
+      if(state.currentShow === null || state.currentItem.id === state.currentShow.id) {
+        state.updateRecords.unshift(action.payload);
+        const updateRecords = state.updateRecords.slice(0,5);
 
-      return {...state,
-        updateRecords,
-        currentStep: state.currentStep + 1}
+        return {...state,
+          updateRecords,
+          currentStep: state.currentStep + 1, TimeLineVisible: true}
+      }
+      return {...state, currentStep: state.currentStep + 1, TimeLineVisible: true};
     },
     addProductSuccess (state, action) {
-      state.product.unshift(action.payload);
+      state.product.push(action.payload);
       const product = state.product;
 
       return {...state,
-        product,
+        product,productModalVisible:false
         }
+    },
+    deleteProductSuccess (state, action) {
+      let product = state.product.filter( (item) => {
+        return item.id !== action.payload
+      });
+      if(state.currentShow && state.currentShow.id === action.payload) {
+        return {...state,product,TimeLineVisible: false}
+      }
+      return {...state,product}
     }
   },
   effects: {
@@ -91,7 +107,7 @@ export default {
         }
       },
       *query ({payload}, { call, put,select}) {
-
+          yield put({type:'showCurrent',payload})
           const data = yield call(query,payload);
           if(data) {
             data.page = payload.page;
@@ -102,8 +118,6 @@ export default {
         }
       },
       *queryProduct ({payload}, { call, put, select}) {
-        const state = select();
-        console.log(state);
           const data = yield call(queryProduct,payload);
           if(data) {
             yield put({
@@ -112,8 +126,9 @@ export default {
             })
         }
       },
-      *add ({payload}, { call, put}) {
-          // payload.productID = currentItem.productID;
+      *add ({payload}, { call, put,select}) {
+        const store = yield select();
+        payload.productID = store.android.currentItem.productID;
           console.log(arguments);
           const data = yield call(add,payload);
           if(data) {
@@ -123,13 +138,25 @@ export default {
             })
         }
       },
-      *seeMore ({payload}, { call, put}) {
+      *seeMore ({payload}, { call, put, select}) {
+        const productID = select().android.currentShow.productID;
+        payload.productID = productID;
           const data = yield call(query,payload);
           if(data) {
             data.page = payload.page;
             yield put({
               type: 'seeMoreSuccess',
               payload: data
+            })
+          }
+      },
+      *deleteProduct ({payload}, { call, put}) {
+          const id = payload.id;
+          const response = yield call(deleteProduct,id);
+          if(response.success) {
+            yield put({
+              type: 'deleteProductSuccess',
+              payload: id
             })
           }
       },
@@ -154,3 +181,8 @@ export default {
        }
   },
 };
+
+
+function getCurrentItem (state) {
+  return state.currentItem;
+}

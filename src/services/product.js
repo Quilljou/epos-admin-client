@@ -17,3 +17,12 @@ export async function addProduct(payload) {
         data: qs.stringify(payload)
     })
 }
+
+export async function deleteProduct(id) {
+    return request({
+        url: getUrl(`/client/delete/${id}`),
+        method: 'post',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        nofilter: true
+    })
+}

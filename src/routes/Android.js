@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'dva';
-import  {Button, Table,Row, Col } from 'antd';
+import {Link} from 'dva/router';
+import  {Button, Table,Row, Col,Popconfirm } from 'antd';
 import VersionModal from '../components/Modal/VersionModal'
 import ProductModal from '../components/Modal/ProductModal'
 import UpdateTimeline from '../components/UpdateTimeLine';
@@ -8,7 +9,7 @@ import UpdateTimeline from '../components/UpdateTimeLine';
 import Helmet from "react-helmet";
 
 function Android({dispatch,android}) {
-    const { VersionModalVisible,productModalVisible, updateRecords,total, page, currentStep, uploadPercent,apkUrl,product } = android;
+    const { VersionModalVisible,productModalVisible,TimeLineVisible, updateRecords,total, page, currentStep, currentShow,uploadPercent,apkUrl,product } = android;
 
     const VersionModalProps = {
         VersionModalVisible,
@@ -105,12 +106,15 @@ function Android({dispatch,android}) {
     function queryUpdateRecords(record) {
          dispatch({
              type: 'android/query',
-             payload: {
-               productID: record.productID,
-               perPage: 10,
-               page: 1
-             }
+             payload: record
          })
+    }
+
+    function onDelete(record) {
+        dispatch({
+            type: 'android/deleteProduct',
+            payload: record
+        })
     }
 
     const ProductColumns = [{
@@ -130,9 +134,15 @@ function Android({dispatch,android}) {
           key: '查看更新日志',
           render: (text, record) => (
               <div>
-                  <a onClick={() => queryUpdateRecords(record)}>查看</a>&nbsp;&nbsp;
-                  <a onClick={ () => onShowVersionModal(record)}>版本更新</a>
-              </div>
+                  <Link to={`/version/${record.productID}`}>查看</Link>
+                  &nbsp;&nbsp;
+                  {/* <a onClick={ () => onShowVersionModal(record)}>版本更新</a>
+                  &nbsp;&nbsp; */}
+                  <Popconfirm title="确认删除此项？" onConfirm={() =>
+                   onDelete(record) }>
+                   <a>删除</a>
+                 </Popconfirm>
+             </div>
           ),
         }
     ]
@@ -141,21 +151,18 @@ function Android({dispatch,android}) {
         <div>
             <Helmet title="版本管理" />
             <div className="mb">
-                {/* <Button type="primary" onClick={}>版本更新</Button> */}
-                &nbsp;
-                &nbsp;
                 <Button type="primary" onClick={onShowProductVersionModal}>新增产品</Button>
             </div>
             <Row gutter={24}>
-                 <Col span={8}>
+                 <Col span={18} offset={3} className="transition mb">
                      <div>
                          <h1 className="mb">产品列表</h1>
                         <Table columns={ProductColumns} dataSource={product}
                             pagination={false}></Table>
                      </div>
                  </Col>
-                 <Col span={16}>
-                     <h1 className="mb">更新日志</h1>
+                 <Col span={ TimeLineVisible ? 16: 0} offset={4} className={"transition " + (TimeLineVisible ? "float": '')}>
+                     <h1 className="mb mt">{currentShow? currentShow.name: ''}的更新日志</h1>
                      <UpdateTimeline {...UpdateTimelineProps}></UpdateTimeline>
                  </Col>
                </Row>

@@ -43,28 +43,6 @@ const Dragger = Upload.Dragger;
                                 onNextStep();
                               }
                           }
-                        //   onChange({event,file}) {
-                        //       if(file.status === 'loading') {
-                        //           let percent = Number(event.percent.toFixed(0))
-                        //           onUploading(percent);
-                        //       }
-                        //     // if (status === 'uploading') {
-                        //     //   if(event && event.percent) {
-                        //     //
-                        //     //   }
-                        //     // }
-                        //     if (status === 'done') {
-                        //       message.success(`${file.name} file uploaded successfully.`);
-                        //     } else if (status === 'error') {
-                        //       message.error(`${file.name} file upload failed.`);
-                        //     }
-                        //     // else if (status === 'done') {
-                        //     //     console.log(file.response);
-                        //     //   message.success(`${file.name} 文件上传成功`);
-                        //     // } else if (status === 'error') {
-                        //     //   message.error(`${file.name} 文件上传出错`);
-                        //     // }
-                        //   }
                         };
                     return (
                         // <div>
@@ -107,7 +85,6 @@ const Dragger = Upload.Dragger;
                             }
                             var data = values;
                             data['apk_url'] = apkUrl;
-
                             data.message = strToPara(data.message);
 
                             onAdd(data);
