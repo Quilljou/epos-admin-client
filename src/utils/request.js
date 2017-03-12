@@ -75,6 +75,7 @@ export  function request (options) {
 
 export function getUrl(url) {
   // const base = 'http://112.74.34.58:8888';
-  var base = '/api';
+  // var base = '/api';
+  var base = '/';
   return base + url;
 }
