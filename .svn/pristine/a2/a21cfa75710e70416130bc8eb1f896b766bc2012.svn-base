@@ -1,4 +1,4 @@
-import { query, add, del, update } from '../services/version'
+import { query, add } from '../services/version'
 
 
 export default {
@@ -6,7 +6,6 @@ export default {
   state: {
       total: 0,
       VersionModalVisible: false,
-      updateVersionModalVisible: false,
       page: 1,
       apk: null,
       productID: null,
@@ -14,13 +13,9 @@ export default {
       currentStep: 0,
       infoDone: false,
       uploadPercent: 0,
-      apkUrl: '',
-      currentItem: {}
+      apkUrl: ''
   },
   reducers: {
-    hideUpdateVersionModal (state,action) {
-      return {...state, updateVersionModalVisible: false}
-    },
     uploading (state,action) {
       return {...state, uploadPercent: action.payload}
     },
@@ -46,11 +41,7 @@ export default {
       return {...state, total, page, updateRecords }
     },
     showVersionModal (state, action) {
-      const { type, currentItem } = action.payload;
-      if(type === 'add') {
-        return {...state, VersionModalVisible: true}
-      }
-      return {...state, updateVersionModalVisible: true, currentItem}
+      return {...state, VersionModalVisible: true}
     },
     hideVersionModal (state, action ) {
       // 关闭modal,重置step
@@ -72,25 +63,7 @@ export default {
         return {...state, productID: action.payload}
       }
       return state;
-    },
-    deleteSuccess (state, action) {
-      let updateRecords = state.updateRecords.filter( (item) => {
-        return item.id !== action.payload
-      });
-      return {...state,updateRecords,total: state.total - 1}
-    },
-    updateSuccess (state, action) {
-      const updateRecords = state.updateRecords.map( (p) => {
-        if(p.id === action.payload.id) {
-          return action.payload;
-        }
-        return p;
-      })
-      return {...state,
-                updateRecords,
-                productModalVisible:false
-              }
-    },
+    }
   },
   effects: {
       *query ({payload}, { call, put}) {
@@ -108,12 +81,9 @@ export default {
         })
       },
       *add ({payload}, { call, put, select}) {
-          const version  = yield select(state => state.version);
-          const { productID, apkUrl } = version;
-
+          const { version } = yield select();
+          const productID = version.productID
           payload.productID = productID;
-          payload['apk_url'] = apkUrl;
-
           const data = yield call(add,payload);
           if(data) {
             yield put({
@@ -121,34 +91,17 @@ export default {
               payload: data
             })
         }
-      },
-      *update ({payload}, { call, put, select}) {
-          const version  = yield select(state => state.version);
-          const { currentItem } = version;
-          payload = {...currentItem,...payload};
-          console.log(payload);
-          const data = yield call(update,payload);
-          if(data) {
-            yield put({
-              type: 'updateSuccess',
-              payload: data
-            })
-        }
-      },
-      /**
-      *   @param payload => id
-      **/
-      *del ({payload}, { call, put}) {
-
-          const response = yield call(del,payload);
-          console.log(response);
-          if(response.success) {
-            yield put({
-              type: 'deleteSuccess',
-              payload
-            })
-          }
       }
+      // *seeMore ({payload}, { call, put}) {
+      //     const data = yield call(query,payload);
+      //     if(data) {
+      //       data.page = payload.page;
+      //       yield put({
+      //         type: 'seeMoreSuccess',
+      //         payload: data
+      //       })
+      //     }
+      // },
   },
   subscriptions: {
 

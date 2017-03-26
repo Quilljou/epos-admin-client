@@ -9,7 +9,7 @@ import UpdateTimeline from '../components/UpdateTimeLine';
 import Helmet from "react-helmet";
 
 function Android({dispatch,android}) {
-    const { VersionModalVisible, productModalVisible, productModalType, TimeLineVisible, updateRecords, total, page, currentItem,currentStep, currentShow, uploadPercent, apkUrl, product } = android;
+    const { VersionModalVisible,productModalVisible,TimeLineVisible, updateRecords,total, page, currentStep, currentShow,uploadPercent,apkUrl,product } = android;
 
     const VersionModalProps = {
         VersionModalVisible,
@@ -60,19 +60,17 @@ function Android({dispatch,android}) {
 
     const ProductModalProps = {
         productModalVisible,
-        productModalType,
-        currentItem,
         onhideProductModal () {
             dispatch({
                 type: 'android/hideProductModal'
             })
         },
-        onOk (data) {
+        onAddProduct (data) {
             dispatch({
-                type: `android/${productModalType}`,
-                payload: {data}
+                type: 'android/addProduct',
+                payload: data
             })
-        }
+        },
     }
 
     const UpdateTimelineProps = {
@@ -92,13 +90,16 @@ function Android({dispatch,android}) {
 
     }
 
-    function onShowProductVersionModal(productModalType,currentItem) {
-        const payload = { productModalType };
-        if( currentItem ) payload.currentItem = currentItem;
-        // 如果新增，则闯入item
+    function onShowVersionModal(payload) {
+        dispatch({
+            type: 'android/showVersionModal',
+            payload
+        })
+    }
+
+    function onShowProductVersionModal() {
         dispatch({
             type: 'android/showProductModal',
-            payload
         })
     }
 
@@ -133,14 +134,14 @@ function Android({dispatch,android}) {
           key: '查看更新日志',
           render: (text, record) => (
               <div>
-                  <Link to={`/version/${record.productID}`}>版本更新</Link>
+                  <Link to={`/version/${record.productID}`}>查看</Link>
                   &nbsp;&nbsp;
-                 <a onClick={()=>onShowProductVersionModal('update',record)}>产品更新</a>
-                 &nbsp;&nbsp;
-                 <Popconfirm title="确认删除此项？" onConfirm={() =>
-                  onDelete(record) }>
-                  <a>删除</a>
-                </Popconfirm>
+                  {/* <a onClick={ () => onShowVersionModal(record)}>版本更新</a>
+                  &nbsp;&nbsp; */}
+                  <Popconfirm title="确认删除此项？" onConfirm={() =>
+                   onDelete(record) }>
+                   <a>删除</a>
+                 </Popconfirm>
              </div>
           ),
         }
@@ -150,7 +151,7 @@ function Android({dispatch,android}) {
         <div>
             <Helmet title="版本管理" />
             <div className="mb">
-                <Button type="primary" onClick={()=>onShowProductVersionModal('add')}>新增产品</Button>
+                <Button type="primary" onClick={onShowProductVersionModal}>新增产品</Button>
             </div>
             <Row gutter={24}>
                  <Col span={18} offset={3} className="transition mb">

@@ -1,10 +1,8 @@
 import React from 'react';
 import {connect} from 'dva';
-import {Button, Table, Row, Col, Popover, Popconfirm} from 'antd';
+import {Button, Table, Row, Col, Popover} from 'antd';
 import VersionModal from '../components/Modal/VersionModal'
-import { UpdateVersionModal} from '../components/Modal/UdpateVersionModal'
 import Helmet from "react-helmet";
-
 
 class Version extends React.Component {
   constructor(props) {
@@ -26,7 +24,7 @@ class Version extends React.Component {
 
 
   render() {
-    const {location, dispatch, version, params} = this.props;
+    const {location, dispatch, version} = this.props;
 
     const {
       VersionModalVisible,
@@ -35,17 +33,12 @@ class Version extends React.Component {
       page,
       currentStep,
       uploadPercent,
-      apkUrl,
-      updateVersionModalVisible,
-      currentItem
+      apkUrl
     } = version;
 
-    function onShowVersionModal(type,currentItem) {
-          const payload = { type };
-          if(currentItem) payload.currentItem = currentItem;
+    function onShowVersionModal() {
           dispatch({
               type: 'version/showVersionModal',
-              payload
           })
     }
 
@@ -82,29 +75,6 @@ class Version extends React.Component {
           }
         })
       }
-    }
-
-    function onDelete({id}) {
-      dispatch({
-        type: 'version/del',
-        payload: id
-      })
-    }
-
-    const RenderLog = function({message}) {
-      let messages = message.split('。');
-      messages = messages.filter( (item) => {
-        return Boolean(item) === true;
-      });
-
-      return (
-        <div>
-          {messages.map( (item,index) => {
-            return <p><span>{index + 1}. </span>{item}</p>
-          })}
-        </div>
-      )
-
     }
 
     const columns = [
@@ -158,25 +128,11 @@ class Version extends React.Component {
                   placement="top"
                   title="更新日志"
                   content={
-                    <RenderLog message={record.message}></RenderLog>
+                      <div dangerouslySetInnerHTML={{__html: record.message}}></div>
                   }>
                     <Button type="primary" size="small">查看</Button>
                  </Popover>
         }
-      },{
-        title: '操作',
-        key: 'operate',
-        width: '100px',
-        render: (text, record) => (
-            <div>
-               <a onClick={()=>onShowVersionModal('update',record)}>修改</a>
-               &nbsp;&nbsp;
-               <Popconfirm title="确认删除此项？" onConfirm={() =>
-                onDelete(record) }>
-                <a>删除</a>
-              </Popconfirm>
-           </div>
-        ),
       }
     ]
 
@@ -186,45 +142,19 @@ class Version extends React.Component {
       pagination: {
         page,
         total,
-        shwoTotal: true,
-        onChange (page) {
-          dispatch({
-            type: 'version/query',
-            payload: {
-              productID: params.id,
-              perPage: 10,
-              page
-            }
-          })
-        }
-      }
-    }
-
-    const UpdateVersionModalProps = {
-      updateVersionModalVisible,
-      currentItem,
-      onCancel () {
-        dispatch({
-          type: 'version/hideUpdateVersionModal'
-        })
-      },
-      onUpdate (payload) {
-        dispatch({
-          type: 'version/update',
-          payload
-        })
+        shwoTotal: true
       }
     }
 
     return (
       <div>
         <Helmet title="版本管理"/>
-        <div className="mb">
-          <Button type="primary" onClick={() => onShowVersionModal('add')}>版本更新</Button>
+        <div className="mb" onClick={onShowVersionModal}>
+          <Button type="primary">版本更新</Button>
         </div>
         <Table {...TableProps}></Table>
         <VersionModal {...VersionModalProps}></VersionModal>
-        <UpdateVersionModal {...UpdateVersionModalProps}></UpdateVersionModal>
+
       </div>
     )
   }

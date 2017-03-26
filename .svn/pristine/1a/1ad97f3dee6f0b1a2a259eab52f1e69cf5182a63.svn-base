@@ -11,7 +11,7 @@ const ProductModal = Form.create()(
               wrapperCol: { span: 14 }
             };
 
-        const {productModalVisible, productModalType, onhideProductModal, form, onOk, currentItem } = props;
+        const {productModalVisible, onhideProductModal, form, onAddProduct} = props;
         const { getFieldDecorator, validateFields, getFieldsValue, validateFieldsAndScroll } = form;
 
         function handleOk() {
@@ -20,13 +20,13 @@ const ProductModal = Form.create()(
                 if(errors) {
                     return;
                 }
-                onOk(values);
+                onAddProduct(values);
             })
         }
 
 
         return (
-            <Modal title={(productModalType === 'add'? '新增' : '更新') + '产品'}
+            <Modal title="新增产品"
                 visible={productModalVisible}
                 onOk = {handleOk}
                 onCancel = {onhideProductModal}>
@@ -35,7 +35,6 @@ const ProductModal = Form.create()(
                         {...formItemLayout}
                         hasFeedback>
                         {getFieldDecorator('name',{
-                            initialValue: currentItem.name,
                             rules: [{
                                 required: true,
                                 message: '不能为空'
@@ -48,7 +47,6 @@ const ProductModal = Form.create()(
                         {...formItemLayout}
                         hasFeedback>
                         {getFieldDecorator('productID',{
-                            initialValue: currentItem.productID,
                             rules: [{
                                 required: true,
                                 message: '不能为空'

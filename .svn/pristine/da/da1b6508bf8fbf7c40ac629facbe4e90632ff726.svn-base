@@ -1,4 +1,4 @@
-import { addProduct, queryProduct, deleteProduct,updateProduct } from '../services/product'
+import { addProduct, queryProduct, deleteProduct } from '../services/product'
 
 
 export default {
@@ -16,9 +16,8 @@ export default {
       infoDone: false,
       uploadPercent: 0,
       apkUrl: '',
-      currentItem: {},
-      currentShow: null,
-      productModalType: 'add'
+      currentItem: null,
+      currentShow: null
   },
   reducers: {
     uploading (state,action) {
@@ -28,10 +27,10 @@ export default {
       return {...state, apkUrl: action.payload}
     },
     hideProductModal (state, action ) {
-      return {...state, productModalVisible: false,currentItem: {}}
+      return {...state, productModalVisible: false}
     },
     showProductModal (state, action) {
-      return {...state, productModalVisible: true, ...action.payload}
+      return {...state, productModalVisible: true}
     },
     changeStep (state,action) {
       switch (action.payload.type) {
@@ -87,20 +86,6 @@ export default {
         product,productModalVisible:false
         }
     },
-    updateProductSuccess (state, action) {
-      // state.product.push(action.payload);
-      // const product = state.product;
-      const product = state.product.map( (p) => {
-        if(p.id === action.payload.id) {
-          return action.payload;
-        }
-        return p;
-      })
-      return {...state,
-                product,
-                productModalVisible:false
-              }
-    },
     deleteProductSuccess (state, action) {
       let product = state.product.filter( (item) => {
         return item.id !== action.payload
@@ -112,22 +97,11 @@ export default {
     }
   },
   effects: {
-      *add ({payload}, { call, put}) {
+      *addProduct ({payload}, { call, put}) {
           const data = yield call(addProduct,payload);
           if(data) {
             yield put({
               type: 'addProductSuccess',
-              payload: data
-            })
-        }
-      },
-      *update ({payload}, { call, put, select}) {
-        const state = yield select(state => state.android)
-        payload.id = state.currentItem.id;
-        const data = yield call(updateProduct,payload);
-          if(data) {
-            yield put({
-              type: 'updateProductSuccess',
               payload: data
             })
         }
@@ -148,6 +122,18 @@ export default {
           if(data) {
             yield put({
               type: 'queryProductSuccess',
+              payload: data
+            })
+        }
+      },
+      *add ({payload}, { call, put,select}) {
+        const store = yield select();
+        payload.productID = store.android.currentItem.productID;
+          console.log(arguments);
+          const data = yield call(add,payload);
+          if(data) {
+            yield put({
+              type: 'addSuccess',
               payload: data
             })
         }

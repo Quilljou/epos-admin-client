@@ -3,6 +3,8 @@ import { Modal, Form, Select, Input, Switch, Upload, Button, Icon, Progress, Ste
 import Auth from '../../utils/auth';
 // import { checkLogin, check}
 
+import { VersionForm } from './UdpateVersionModal'
+
 const FormItem = Form.Item;
 const Option = Select.Option;
 const Step = Steps.Step;
@@ -25,13 +27,13 @@ const Dragger = Upload.Dragger;
     const VersionModal =
             function(props) {
                 // var formData = new FormData()
-                const {VersionModalVisible,onAdd,onHideVersionModal, currentStep, onNextStep, onPreviosStep, uploadPercent,onUploading, apkUrl, onUploadDone } = props;
+                const {VersionModalVisible,onAdd,onHideVersionModal, currentStep, onNextStep, onPreviosStep,onUploadDone } = props;
 
                 const StepOne = function () {
                     const Draggerprops = {
                           name: 'apk',
                           showUploadList: true,
-                          action: '/version/apk/upload',
+                          action: '/api/version/apk/upload',
                           headers: {
                               Authorization: 'Bearer ' + Auth.getToken()
                           },
@@ -45,7 +47,6 @@ const Dragger = Upload.Dragger;
                           }
                         };
                     return (
-                        // <div>
                             <div style={{ marginTop: 16, height: 180 }}>
                                 <Dragger {...Draggerprops}>
                                   <p className="ant-upload-drag-icon">
@@ -54,144 +55,12 @@ const Dragger = Upload.Dragger;
                                   <p className="ant-upload-text">Click or drag file to this area to upload</p>
                                   <p className="ant-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files</p>
                                 </Dragger>
-                                {/* {
-                                  uploadPercent > 0 ?
-                                  <div className="mt">
-                                      <Progress  percent={uploadPercent} />
-                                  </div>
-                                   :
-                                  ''
-                                } */}
                               </div>
-
-
-                        // </div>
                     )
                 }
 
-                 function StepTwo(formprops) {
 
-                    const formItemLayout = {
-                      labelCol: { span: 6 },
-                      wrapperCol: { span: 14 }
-                    };
-                    const { getFieldDecorator, getFieldsValue, validateFieldsAndScroll } = formprops.form;
-
-
-                    function handleSubmit() {
-                        validateFieldsAndScroll( (errors, values) => {
-                            if(errors) {
-                                return;
-                            }
-                            var data = values;
-                            data['apk_url'] = apkUrl;
-                            data.message = strToPara(data.message);
-
-                            onAdd(data);
-                        })
-
-
-                        function strToPara (str) {
-                            var strArr = str.split('。');
-                            if(strArr.length) {
-                                return strArr.map( (item,index)  => {
-                                    if(item.length) {
-                                        return pFactory(item,index);
-                                    }
-                                }).join('')
-                            }
-                            return str;
-                        }
-
-                        function pFactory(string,index) {
-                            return '<p> '  + (index + 1) + '. ' + string +'</p>';
-                        }
-                    }
-
-                    return(
-                        <div>
-                            <FormItem label="最大版本号"
-                                {...formItemLayout}
-                                hasFeedback>
-                                {getFieldDecorator('max_version',{
-                                    rules: [{
-                                        required: true,
-                                        message: '不能为空'
-                                    }]
-                                })(
-                                    <Input placeholder="最大版本号"/>
-                                )}
-                            </FormItem>
-                            <FormItem label="版本号"
-                                {...formItemLayout}
-                                hasFeedback>
-                                {getFieldDecorator('version_code',{
-                                    rules: [{
-                                        required: true,
-                                        message: '不能为空'
-                                    }]
-                                })(
-                                    <Input placeholder="版本号"/>
-                                )}
-                            </FormItem>
-                            <FormItem label="升级说明"
-                                {...formItemLayout}
-                                hasFeedback>
-                                {getFieldDecorator('message',{
-                                    rules: [{
-                                        required: true,
-                                        message: '不能为空'
-                                    }]
-                                })(
-                                    <textarea style={{width:'100%'}} placeholder="以句号分隔升级说明信息"/>
-                                )}
-                            </FormItem>
-                            <FormItem label="是否有效"
-                                {...formItemLayout}
-                                hasFeedback>
-                                {getFieldDecorator('status',{
-                                    initialValue: '1',
-                                    rules: [{
-                                        required: true,
-                                        message: '不能为空'
-                                    }]
-                                })(
-                                    <Select>
-                                        <Option value="1">是</Option>
-                                        <Option value="2">否</Option>
-                                    </Select>
-                                )}
-                            </FormItem>
-                            <FormItem label="下载模式"
-                                {...formItemLayout}
-                                hasFeedback>
-                                {getFieldDecorator('download_mode',{
-                                    initialValue: '1',
-                                    rules: [{
-                                        required: true,
-                                        message: '不能为空'
-                                    }]
-                                })(
-                                    <Select>
-                                        <Option value="1">ftp下载</Option>
-                                        <Option value="2">浏览器下载</Option>
-                                    </Select>
-                                )}
-                            </FormItem>
-                            <FormItem
-                                {...formItemLayout}>
-                                <div style={{textAlign: 'right'}}>
-                                    <Button onClick={onHideVersionModal}>取消</Button>
-                                    &nbsp;
-                                    &nbsp;
-                                    <Button type="primary" onClick={handleSubmit}>提交</Button>
-                                </div>
-                            </FormItem>
-                        </div>
-                    )
-                }
-
-                StepTwo = Form.create()(StepTwo)
+                const StepTwo = Form.create()(VersionForm)
 
 
                 function StepThree () {
@@ -202,30 +71,12 @@ const Dragger = Upload.Dragger;
                     )
                 }
 
-                // function Footer() {
-                //     switch (currentStep) {
-                //         case 0:
-                //             return (
-                //                 <span></span>
-                //                 <Button type="primary" onClick={onNextStep}>下一步</Button>
-                //             )
-                //             break;
-                //         case 1:
-                //             return (
-                //                 <div>
-                //                     <Button onClick={onPreviosStep}>上一步</Button>
-                //                     &nbsp;
-                //                     <Button type="primary" onClick={onNextStep}>提交</Button>
-                //                 </div>
-                //             )
-                //             break;
-                //         case 2:
-                //             return (
-                //                 <Button type="primary" onClick={onHideVersionModal}>完成</Button>
-                //             )
-                //             break;
-                //     }
-                // }
+                const StepTwoProps = {
+                    onCancel: onHideVersionModal,
+                    onSubmit (values) {
+                      onAdd(values)
+                    }
+                }
 
                 function CurrentContent () {
                     switch (currentStep) {
@@ -236,12 +87,12 @@ const Dragger = Upload.Dragger;
                             break;
                         case 1:
                             return(
-                                <StepTwo></StepTwo>
+                                <StepTwo {...StepTwoProps}></StepTwo>
                             )
                             break;
                         default:
                             return(
-                                <StepThree></StepThree>
+                                <StepThree ></StepThree>
                             )
                     }
                 }
