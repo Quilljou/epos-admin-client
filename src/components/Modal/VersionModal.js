@@ -33,7 +33,7 @@ const Dragger = Upload.Dragger;
                     const Draggerprops = {
                           name: 'apk',
                           showUploadList: true,
-                          action: '/api/version/apk/upload',
+                          action: '/version/apk/upload',
                           headers: {
                               Authorization: 'Bearer ' + Auth.getToken()
                           },
