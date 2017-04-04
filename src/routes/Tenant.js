@@ -131,7 +131,7 @@ function Tenant({ dispatch, tenant }) {
         return (
           <div>
               <Helmet title="商户管理"></Helmet>
-            <a onClick={() => onShowPwdModal(text,record,index)}>修改密码</a> &nbsp;&nbsp;
+            <a onClick={() => onShowPwdModal(text,record,index)} >修改密码</a> &nbsp;&nbsp;
             <Dropdown overlay={
                 <Menu onClick={(e) => onRenew(record, e)}>
                      <Menu.Item key='1'>一年</Menu.Item>

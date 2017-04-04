@@ -14,6 +14,7 @@ app.model(require('./models/android'));
 app.model(require('./models/tenant'));
 app.model(require('./models/login'));
 app.model(require('./models/version'));
+app.model(require('./models/log'));
 app.model(require("./models/app"));
 
 // 4. Router

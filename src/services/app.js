@@ -12,7 +12,7 @@ export async function login(payload) {
 }
 
 
-export async function add(payload) {
+export async function logout(payload) {
     return request({
         url: getUrl('/version/1'),
         method: 'post',

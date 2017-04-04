@@ -24,16 +24,6 @@ export default {
         total: state.total + 1
       }
     },
-    deleteSuccess(state,action) {
-      const newData =  state.dataSource.filter((item) => {
-        return item.id !== action.payload.id;
-      })
-
-      return {...state,
-        dataSource: newData,
-        total: state.total - 1
-      }
-    },
     updateSuccess(state,action) {
       const id = action.payload.id;
       const newData = state.dataSource.map((item) => {
@@ -84,14 +74,20 @@ export default {
           })
         }
       },
-      *del( {payload}, {call, put}) {
+      *del( {payload}, {call, put, select}) {
+        const tenant = yield  select((state) => state.tenant);
+        const { page, dataSource } = tenant;
         const response = yield call(del,payload);
         // 不返回data，所以需要把response拉出来判断
         if(response.success) {
-          yield put({
-            type: 'deleteSuccess',
-            payload
-          })
+          if(page !== 1 && dataSource.length === 1 ) {
+            yield put({
+              type: 'query',
+              payload: {page: page - 1}
+            })
+          }else {
+            yield put(query,{ page })
+          }
         }
       },
       *renew ({payload}, { call, put }) {
