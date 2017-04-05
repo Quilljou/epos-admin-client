@@ -65,7 +65,7 @@ const FormItem = Form.Item
 
 function Login(props) {
     const {
-        loginButtonLoading,
+        loading,
         form: {
           getFieldDecorator,
           validateFieldsAndScroll
@@ -115,7 +115,7 @@ function Login(props) {
                 })(<Input size='large' type='password' onPressEnter={onOk} placeholder='密码' />)}
               </FormItem>
               <Row>
-                <Button type='primary' size='large' onClick={onOk} loading={loginButtonLoading}>
+                <Button type='primary' size='large' onClick={onOk} loading={loading}>
                   登录
                 </Button>
               </Row>
@@ -127,8 +127,8 @@ function Login(props) {
 Login = Form.create()(Login)
 
 
-function mapStateToProps({login}) {
-    return {login};
+function mapStateToProps({login, loading}) {
+    return {login, loading: loading.global};
 }
 
 export default connect(mapStateToProps)(Login);

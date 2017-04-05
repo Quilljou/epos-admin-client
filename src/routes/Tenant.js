@@ -9,7 +9,7 @@ import Helmet from 'react-helmet';
 // import styles from './main.css';
 const  MenuItem = Menu.Item;
 
-function Tenant({ dispatch, tenant }) {
+function Tenant({ dispatch, tenant, loading }) {
     const { total,dataSource, userModalVisible, pwdModalVisible, page} = tenant;
 
     function onDelete(text,record) {
@@ -220,6 +220,7 @@ function Tenant({ dispatch, tenant }) {
     const TableProps = {
         pagination,
         dataSource,
+        loading,
         columns,
         bordered: true,
         rowKey: 'id',
@@ -242,8 +243,9 @@ function Tenant({ dispatch, tenant }) {
 }
 
 
-function mapStateToProps({ tenant }) {
-  return { tenant }
+function mapStateToProps({ tenant,loading }) {
+  return { tenant,loading: loading.global,
+ }
 }
 
 

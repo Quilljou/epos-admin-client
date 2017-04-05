@@ -8,7 +8,7 @@ import UpdateTimeline from '../components/UpdateTimeLine';
 // import ProductTable from '../components/ProductTable'
 import Helmet from "react-helmet";
 
-function Android({dispatch,android}) {
+function Android({ dispatch, android, loading }) {
     const { VersionModalVisible, productModalVisible, productModalType, TimeLineVisible, updateRecords, total, page, currentItem,currentStep, currentShow, uploadPercent, apkUrl, product } = android;
 
     const VersionModalProps = {
@@ -157,6 +157,7 @@ function Android({dispatch,android}) {
                      <div>
                          <h1 className="mb">产品列表</h1>
                         <Table columns={ProductColumns} dataSource={product}
+                          loading = { loading }
                             pagination={false}></Table>
                      </div>
                  </Col>
@@ -171,8 +172,10 @@ function Android({dispatch,android}) {
     )
 }
 
-function mapStateToProps({android}) {
-    return {android};
+
+function mapStateToProps({android, loading}) {
+  return { android, loading: loading.global };
 }
+
 
 export default connect(mapStateToProps)(Android);

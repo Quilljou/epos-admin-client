@@ -10,8 +10,7 @@
       "proxy": {
           "/api": {
             "target": "http://112.74.34.58:8888/",
-            "changeOrigin": true,
-            "pathRewrite": { "^/api" : "" }
+            "changeOrigin": true
           }
         }
     },

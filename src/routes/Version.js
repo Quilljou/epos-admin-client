@@ -26,7 +26,7 @@ class Version extends React.Component {
 
 
   render() {
-    const {location, dispatch, version, params} = this.props;
+    const {location, dispatch, version, params, loading } = this.props;
 
     const {
       VersionModalVisible,
@@ -183,6 +183,7 @@ class Version extends React.Component {
     const TableProps = {
       dataSource: updateRecords,
       columns,
+      loading,
       pagination: {
         page,
         total,
@@ -231,8 +232,8 @@ class Version extends React.Component {
 
 }
 
-function mapStateToProps({version}) {
-  return {version};
+function mapStateToProps({version, loading}) {
+  return { version, loading: loading.global };
 }
 
 export default connect(mapStateToProps)(Version);

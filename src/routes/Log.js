@@ -22,7 +22,7 @@ class Log extends React.Component {
     })
   }
   render() {
-    const { dispatch, log } = this.props;
+    const { dispatch, log, loading } = this.props;
     const { total,dataSource, page, currentProduct, product } = log;
 
     function onSelect(e) {
@@ -82,6 +82,7 @@ class Log extends React.Component {
         pagination,
         dataSource,
         columns,
+        loading,
         bordered: true,
         rowKey: 'id'
     }
@@ -114,8 +115,8 @@ class Log extends React.Component {
 }
 
 
-function mapStateToProps({ log, android }) {
-  return { log, android }
+function mapStateToProps({log, loading}) {
+  return { log, loading: loading.global };
 }
 
 
