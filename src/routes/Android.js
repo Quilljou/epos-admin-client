@@ -158,6 +158,7 @@ function Android({ dispatch, android, loading }) {
                          <h1 className="mb">产品列表</h1>
                         <Table columns={ProductColumns} dataSource={product}
                           loading = { loading }
+                          bordered = { true }
                             pagination={false}></Table>
                      </div>
                  </Col>

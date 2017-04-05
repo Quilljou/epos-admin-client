@@ -82,7 +82,6 @@ function Login(props) {
             type: 'login/login',
             payload: values
         })
-
           })
     }
 

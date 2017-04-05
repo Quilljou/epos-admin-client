@@ -8,10 +8,10 @@ import Bread from '../components/Layout/Bread';
 import Login from './Login';
 
 
-function App({ dispatch, children, app }) {
+function App({ dispatch, children, app, location }) {
     const { login,loginButtonLoading, onOk, user, changeNavStatus,siderOpen } = app;
     const siderProps = {
-        // menus: menus.data
+      location
     }
 
     const HeaderProps = {
@@ -44,7 +44,7 @@ function App({ dispatch, children, app }) {
                         left: siderOpen ? '0' : '-200px'
                     }}
                     className={styles.sider}>
-                    <Sider />
+                    <Sider {...siderProps}/>
                 </aside>
                 <main className={styles.main}
                     style={{
