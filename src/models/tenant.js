@@ -86,7 +86,10 @@ export default {
               payload: {page: page - 1}
             })
           }else {
-            yield put(query,{ page })
+            yield put({
+              type: 'query',
+              payload: { page }
+            })
           }
         }
       },
