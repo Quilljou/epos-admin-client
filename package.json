@@ -20,12 +20,11 @@
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "react-helmet": "^4.0.0",
-    "reqwest": "^2.0.5",
-    "whatwg-fetch": "^2.0.2"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
     "babel-plugin-dva-hmr": "^0.3.2",
+    "babel-plugin-import": "^1.1.1",
     "babel-plugin-transform-runtime": "^6.9.0",
     "eslint": "^3.2.2",
     "eslint-config-airbnb": "^13.0.0",
