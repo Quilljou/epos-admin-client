@@ -5,7 +5,17 @@ node_js:
 cache:
   directories: node_modules
 
-install: cnpm install
+install: npm install
 
 script:
 - npm run build
+
+branches:
+  only:
+  - master
+
+after-success:
+- npm run deploy
+
+addons:
+  ssh_known_hosts: www.quilljou.com
