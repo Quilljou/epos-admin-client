@@ -13,12 +13,14 @@ export default {
   },
   reducers: {
     querySuccess (state, {payload}) {
-      console.log(payload);
       return {...state, ...payload};
     }
   },
   effects: {
-      *query({ payload }, { call, put, select }) {
+      *query( { payload }, { call, put, select }) {
+          let { page } = payload;
+          page = Number(page);
+
           let { product, currentProduct } = yield select(state => state.log)
 
           if(!product.length) {
@@ -30,13 +32,16 @@ export default {
                 type: 'querySuccess',
                 payload: {
                   product: data,
-                  currentProduct
+                  currentProduct,
+                  page
                 }
               })
             }
           }
 
+          // 传入当前选中版本
           payload.productID = currentProduct.productID;
+
           const data = yield call(query, payload);
 
           if(data) {
@@ -44,7 +49,8 @@ export default {
                 type: 'querySuccess',
                 payload: {
                   dataSource: data.records,
-                  total: data.total
+                  total: data.total,
+                  page
                 }
               })
           }

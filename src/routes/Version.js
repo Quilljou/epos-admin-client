@@ -100,7 +100,7 @@ class Version extends React.Component {
       return (
         <div>
           {messages.map( (item,index) => {
-            return <p><span>{index + 1}. </span>{item}</p>
+            return <p key={index}><span>{index + 1}. </span>{item}</p>
           })}
         </div>
       )
@@ -184,6 +184,7 @@ class Version extends React.Component {
       dataSource: updateRecords,
       columns,
       loading,
+      rowKey: 'id',
       pagination: {
         page,
         total,

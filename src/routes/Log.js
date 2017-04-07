@@ -18,7 +18,9 @@ class Log extends React.Component {
   componentDidMount () {
     this.dispatch({
       type: 'log/query',
-      payload: {},
+      payload: {
+        page: 1
+      },
     })
   }
   render() {
@@ -44,7 +46,7 @@ class Log extends React.Component {
     const pagination = {
       total,
       onChange (page) {
-        this.dispatch({
+        dispatch({
           type: 'log/query',
           payload: {
             page,
@@ -62,14 +64,17 @@ class Log extends React.Component {
     const columns = [{
       title: '包名',
       dataIndex: 'package',
+      width: '100px',
       key: 'package',
     }, {
       title: '版本号',
       dataIndex: 'version_code',
+      width: '100px',
       key: 'versionCode',
     },{
     title: '出错时间',
     dataIndex: 'time',
+    width: '100px',
     key: 'time',
     }, {
       title: '错误消息',
@@ -81,6 +86,7 @@ class Log extends React.Component {
     const TableProps = {
         pagination,
         dataSource,
+        scroll: { x: 960 },
         columns,
         loading,
         bordered: true,
@@ -90,6 +96,7 @@ class Log extends React.Component {
     return (
         <div>
             <div className="mb">
+              选择产品：&nbsp;
               <Dropdown overlay={
                   <Menu onClick={(e) => onSelect(e)}>
                     {

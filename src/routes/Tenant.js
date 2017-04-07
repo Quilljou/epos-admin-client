@@ -221,6 +221,8 @@ function Tenant({ dispatch, tenant, loading }) {
         pagination,
         dataSource,
         loading,
+        rowKey: 'id',
+        scroll: { x: 960 },
         columns,
         bordered: true,
         rowKey: 'id',

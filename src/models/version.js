@@ -14,7 +14,7 @@ export default {
     infoDone: false,
     uploadPercent: 0,
     apkUrl: '',
-    currentItem: {}
+      currentItem: {}
   },
   reducers : {
     hideUpdateVersionModal(state, action) {
@@ -134,8 +134,17 @@ export default {
   effects : {
     *query({
       payload
-    }, {call, put}) {
+    }, {call, put, select}) {
+      const version = yield select(state => state.version);
+      const { productID } = version;
+
+      if(!payload.productID) {
+        payload.productID = productID;
+      }
+
       const data = yield call(query, payload);
+
+
       if (data) {
         data.page = payload.page;
         yield put({type: 'querySuccess', payload: data})
@@ -159,8 +168,8 @@ export default {
     *update({
       payload
     }, {call, put, select}) {
-      const version = yield select(state => state.version);
-      const {currentItem} = version;
+        const version = yield select(state => state.version);
+        const {currentItem} = version;
       payload = {
         ...currentItem,
         ...payload
