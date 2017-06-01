@@ -113,6 +113,10 @@ class Version extends React.Component {
         key: 'created_at',
         dataIndex: 'created_at'
       }, {
+        title: '版本名',
+        dataIndex: 'version_name',
+        key: 'version_name'
+      }, {
         title: '版本号',
         dataIndex: 'version_code',
         key: 'version_code'

@@ -9,7 +9,7 @@
       ],
       "proxy": {
           "/api": {
-            "target": "http://112.74.34.58:8888/",
+            "target": "http://116.62.68.144:8080/",
             "changeOrigin": true
           }
         }

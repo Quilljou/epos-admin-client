@@ -1,7 +1,7 @@
 import React from 'react';
-import {connect} from 'dva';
-import {Link} from 'dva/router';
-import  {Button, Table,Row, Col,Popconfirm } from 'antd';
+import { connect } from 'dva';
+import { Link } from 'dva/router';
+import  { Button, Table,Row, Col,Popconfirm } from 'antd';
 import VersionModal from '../components/Modal/VersionModal'
 import ProductModal from '../components/Modal/ProductModal'
 import UpdateTimeline from '../components/UpdateTimeLine';
@@ -95,7 +95,7 @@ function Android({ dispatch, android, loading }) {
     function onShowProductVersionModal(productModalType,currentItem) {
         const payload = { productModalType };
         if( currentItem ) payload.currentItem = currentItem;
-        // 如果新增，则闯入item
+        // 如果新增，则传入item
         dispatch({
             type: 'android/showProductModal',
             payload

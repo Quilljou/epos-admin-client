@@ -109,7 +109,7 @@ class Log extends React.Component {
                  </Menu>}>
                 <Button>
                    {
-                       currentProduct.name || ''
+                       currentProduct.name || '无'
                     }<Icon type="down" />
                 </Button>
               </Dropdown>

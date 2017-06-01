@@ -25,7 +25,7 @@ export default {
 
           if(!product.length) {
             const data = yield call(queryProduct)
-            if(data) {
+            if(data && data.length) {
               currentProduct = data[0]
 
               yield put({
@@ -39,20 +39,22 @@ export default {
             }
           }
 
-          // 传入当前选中版本
-          payload.productID = currentProduct.productID;
+          if(currentProduct.productID) {
+            传入当前选中版本
+            payload.productID = currentProduct.productID;
 
-          const data = yield call(query, payload);
+            const data = yield call(query, payload);
 
-          if(data) {
-              yield put({
-                type: 'querySuccess',
-                payload: {
-                  dataSource: data.records,
-                  total: data.total,
-                  page
-                }
-              })
+            if(data) {
+                yield put({
+                  type: 'querySuccess',
+                  payload: {
+                    dataSource: data.records,
+                    total: data.total,
+                    page
+                  }
+                })
+            }
           }
       }
   },
