@@ -70,7 +70,7 @@ function Android({ dispatch, android, loading }) {
         onOk (data) {
             dispatch({
                 type: `android/${productModalType}`,
-                payload: {data}
+                payload: data
             })
         }
     }

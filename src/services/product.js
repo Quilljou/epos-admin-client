@@ -29,7 +29,7 @@ export async function deleteProduct(id) {
 
 export async function updateProduct(payload) {
     const id = payload.id;
-    const data = qs.stringify(payload.data);
+    const data = qs.stringify(payload);
     return request({
         url: getUrl(`/client/${id}`),
         method: 'post',

@@ -73,6 +73,18 @@ export function VersionForm({onCancel,onSubmit,form,currentItem = {download_mode
                    <Input placeholder="版本号"/>
                )}
            </FormItem>
+           <FormItem label="版本名"
+               {...formItemLayout}
+               hasFeedback>
+               {getFieldDecorator('version_name',{
+                   rules: [{
+                       required: true,
+                       message: '不能为空'
+                   }]
+               })(
+                   <Input placeholder="版本名"/>
+               )}
+           </FormItem>
            <FormItem label="升级说明"
                {...formItemLayout}
                hasFeedback>

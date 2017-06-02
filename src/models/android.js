@@ -113,6 +113,7 @@ export default {
   },
   effects: {
       *add ({payload}, { call, put}) {
+          console.log(payload);
           const data = yield call(addProduct,payload);
           if(data) {
             yield put({
@@ -124,6 +125,7 @@ export default {
       *update ({payload}, { call, put, select}) {
         const state = yield select(state => state.android)
         payload.id = state.currentItem.id;
+
         const data = yield call(updateProduct,payload);
           if(data) {
             yield put({

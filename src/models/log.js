@@ -40,7 +40,7 @@ export default {
           }
 
           if(currentProduct.productID) {
-            传入当前选中版本
+            // 传入当前选中版本
             payload.productID = currentProduct.productID;
 
             const data = yield call(query, payload);
